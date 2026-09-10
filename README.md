@@ -46,6 +46,10 @@ npm run preview
 
 The home page provides client-side filters for one or more categories and a publisher. Category selections are combined with OR semantics, while a publisher selection narrows the results across those categories. The catalog and filter options are prerendered from SQLite at build time, so filtering does not require a runtime API.
 
+## Accessibility
+
+The site includes automated axe scans and keyboard-navigation coverage in the Playwright suite. Use the **High contrast** control in the header to switch to a higher-contrast presentation; the preference is stored in the browser and restored on subsequent page loads.
+
 ## Database
 
 The SQLite database is built from `db/games.csv` — there is no live data to migrate.
