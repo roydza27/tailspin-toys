@@ -21,6 +21,12 @@ const { title = "Tailspin Toys" } = Astro.props;
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <script is:inline>
+            const highContrastPreference = localStorage.getItem('tailspin-high-contrast');
+            if (highContrastPreference === 'true') {
+                document.documentElement.classList.add('high-contrast');
+            }
+        </script>
     </head>
     <body class="min-h-screen bg-slate-900 text-white transition-colors duration-300 m-0 w-full h-full font-sans">
         <Header />
@@ -45,5 +51,44 @@ const { title = "Tailspin Toys" } = Astro.props;
     body {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+    }
+
+    html.high-contrast {
+        color-scheme: dark;
+    }
+
+    html.high-contrast body,
+    html.high-contrast [class*="bg-slate-"],
+    html.high-contrast [class*="bg-blue-"],
+    html.high-contrast [class*="bg-purple-"] {
+        background-color: #000 !important;
+    }
+
+    html.high-contrast [class*="text-slate-"],
+    html.high-contrast body {
+        color: #fff !important;
+    }
+
+    html.high-contrast [class*="text-blue-"],
+    html.high-contrast [class*="text-purple-"],
+    html.high-contrast a {
+        color: #ffff00 !important;
+    }
+
+    html.high-contrast [class*="border-"],
+    html.high-contrast header,
+    html.high-contrast input,
+    html.high-contrast select,
+    html.high-contrast button {
+        border-color: #fff !important;
+    }
+
+    html.high-contrast button:focus-visible,
+    html.high-contrast a:focus-visible,
+    html.high-contrast input:focus-visible,
+    html.high-contrast select:focus-visible {
+        outline: 3px solid #ffff00 !important;
+        outline-offset: 3px;
+        box-shadow: none !important;
     }
 </style>
