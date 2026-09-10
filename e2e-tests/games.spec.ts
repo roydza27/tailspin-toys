@@ -6,7 +6,7 @@ test.describe('Game Listing and Navigation', () => {
       await page.goto('/');
     });
 
-    await test.step('Verify games grid is visible', async () => {
+      await test.step('Verify games grid is visible', async () => {
       const gamesGrid = page.getByTestId('games-grid');
       await expect(gamesGrid).toBeVisible();
     });
@@ -22,6 +22,37 @@ test.describe('Game Listing and Navigation', () => {
       await expect(gameCards.first().getByTestId('game-title')).toBeVisible();
       await expect(gameCards.first().getByTestId('game-title')).not.toBeEmpty();
     });
+  });
+
+  test('should filter games by category and publisher and reset filters', async ({ page }) => {
+    await page.goto('/');
+
+    const cards = page.getByTestId('game-card');
+    const visibleCards = page.locator('[data-testid="game-card"]:not([hidden])');
+    const categoryFilter = page.getByLabel('Strategy', { exact: true });
+    const publisherFilter = page.getByTestId('publisher-filter');
+    const resetFilters = page.getByTestId('reset-filters');
+    const resultMessage = page.getByTestId('filter-results');
+
+    await expect(page.getByTestId('game-filters')).toBeVisible();
+    await expect(categoryFilter).toBeVisible();
+    await expect(publisherFilter).toBeVisible();
+    await expect(resetFilters).toBeVisible();
+
+    const initialCount = await cards.count();
+    await categoryFilter.check();
+    await expect(visibleCards).toHaveCount(4);
+    await expect(resultMessage).toHaveText('4 games shown');
+
+    await publisherFilter.selectOption({ label: 'CodeForge Studios' });
+    await expect(visibleCards).toHaveCount(1);
+    await expect(resultMessage).toHaveText('1 game shown');
+
+    await resetFilters.click();
+    await expect(resultMessage).toHaveText(`${initialCount} games shown`);
+    await expect(visibleCards).toHaveCount(initialCount);
+    await expect(publisherFilter).toHaveValue('');
+    await expect(categoryFilter).not.toBeChecked();
   });
 
   test('should navigate to correct game details page when clicking on a game', async ({ page }) => {
